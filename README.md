@@ -1,6 +1,6 @@
 # [Congress first said (in development)](https://twitter.com/congress1stsaid)
 
-#### [derived from](https://maxbittker.github.io/nyt-first-said/)
+#### [derived from the nyt-first-said bot](https://maxbittker.github.io/nyt-first-said/)
 
 The bot tracks when the Congressional record first publishes a word in history.
 
@@ -26,3 +26,7 @@ congress-first-said is essentially a single script. It's intended to be run at r
 ## dev notes
 
 `environment.yml` holds the libraries installed in a python environment (you'll need conda+pip due to some packages being not on `conda-forge`).
+
+## contributors
+
+Sukrit Singh
