@@ -1,28 +1,28 @@
-# [@NYT_first_said](https://twitter.com/NYT_first_said)
+# Congress first said (in development)
 
-#### [Info website](https://maxbittker.github.io/nyt-first-said/)
+#### [derived from](https://maxbittker.github.io/nyt-first-said/)
 
-A twitter bot to track when the New York Times publishes a word for the first time in history.
-running at: [@NYT_first_said](https://twitter.com/NYT_first_said)
+The bot tracks when the Congressional record first publishes a word in history.
 
-It also powers a sibling bot [@NYT_said_where](https://twitter.com/NYT_said_where), which replies to each tweet with a few words of source-text context, and a link to the article.
+This code is still in development, so bugs beware.
 
-The code takes some steps to throw away un-interesting words like proper nouns and urls, but still picks up a lot of typos and nonsense, so the sanitization is an ongoing process.
+The code takes steps to throw away un-interesting words like proper nouns and urls, but picks up a lot of typos and nonsense. Sanitization is an ongoing process.
 
-Some points of inspiration are Allison Parrish's @everyword bot, and the [NewsDiffs](http://newsdiffs.org/about/) editorial change archiving software.
+This fork is inspired by Allison Parrish's @everyword bot, the [NewsDiffs](http://newsdiffs.org/about/) editorial change archiving software, the [NYT first aid bot](https://maxbittker.github.io/nyt-first-said/)
 
 ## Basic architecture
 
-NYT-first-said is essentially a single script. It's running once an hour as a cron job on a small VPS.
+congress-first-said is essentially a single script. It's intended to be run at regular intervals (may require a cloud service.)
 
-`nyt.py` is a beautifulsoup parser adapted from the [newsdiffs sourcecode](https://github.com/ecprice/newsdiffs). 
+`parsers/congress.py` is a beautifulsoup parser adapted from the [newsdiffs sourcecode](https://github.com/ecprice/newsdiffs). 
 
-`redis` holds a list of scraped URLs and seen words (to reduce load on NYT API). It also holds a count of words tweeted recently to avoid blasting out too many tweets in a short period of time.
+## Future pieces (in dev)
+`scrape.py` will check for new record urls, retrieving the article text using `congress.py`, splits them into words, and then determines whether each word is fit to tweet using (in this order) and some heuristics to discard unwanted types of words. Since there's no Congressional record API (is there?) this checking process requires further optimization. If all of these checks pass, it will ultimately tweet the word and any links.
 
-`api_check.py` uses the [NYT article_search API](https://developer.nytimes.com/) to check through all digitized NYT history to be confident this is really the first occurrence of a word. It returns weird 500s for some words. If you know why let me know.
+`api_check.py` uses the [NYT article_search API](https://developer.nytimes.com/) to check through all digitized NYT history to be confident this is really the first occurrence of a word. It returns weird 500s for some words. If you know why let me know. For our case it may not be needed (or useful). Time will tell.
 
-`simple_scrape.py` Checks for new article urls, retrieves the article text using `nyt.py`, splits them into words, and then determines whether each word is fit to tweet using (in this order) some heuristics to discard unwanted types of words, uniqueness in our local redis instance, and finally uniqueness against the article_search api. If all of these checks pass, it tweets the word, and replies with the context and link.
+## Again - this is a work in progress.
 
+## dev notes
 
-Also check out [@nyt-finally-said](https://github.com/uniphil/nyt-finally-said), a cool sibling bot that cross-references these words with the google n-gram dataset!
-
+`environment.yml` holds the libraries installed in a python environment (you'll need conda+pip due to some packages being not on `conda-forge`).
