@@ -1,4 +1,4 @@
-# Congress first said (in development)
+# [Congress first said (in development)](https://twitter.com/congress1stsaid)
 
 #### [derived from](https://maxbittker.github.io/nyt-first-said/)
 
